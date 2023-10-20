@@ -39,7 +39,7 @@ interface Props {
   experienceYears: number;
 }
 
-const VolunteerCard = ({ name, role, experienceYears }: Props) => {
+const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
   const [editMode, setEditMode] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,9 +47,9 @@ const VolunteerCard = ({ name, role, experienceYears }: Props) => {
     mode: "onBlur",
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      role: "",
-      experienceYears: 1,
+      name,
+      role,
+      experienceYears,
     },
   });
 
