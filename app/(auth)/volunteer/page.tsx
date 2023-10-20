@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import LinkedinLogin from "../../components/LinkedinLogin";
+import LinkedinLogin from "../../../components/LinkedinLogin";
 
 
 const Volunteer = () => {
@@ -13,7 +13,7 @@ const Volunteer = () => {
       </h1>
       <p>
         למטרת שמירה על הביטחון שלכם\ן ושל כולנו, נבקש להתחבר באמצעות Linkedin
-        שנוכל לאמת את זהותם
+        על מנת לאמת את זהותכם
       </p>
       <p className="text-sm">
         *פרופיל הLinkedin ישמש גם כצורת ההתקשרות ביניכם/ן וממנו נמשוך את הפרטים

@@ -30,10 +30,10 @@ const AddVolunteer = () => {
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       <Form>
         <Field name="input">
-          {({ field }) => <Input {...field} placeholder="Input" />}
+          {({ field } : { field: any}) => <Input {...field} placeholder="Input" />}
         </Field>
         <Field name="dropdown">
-          {({ field }) => (
+          {({ field } : { field: any}) => (
             <Dropdown
               {...field}
               options={dropdownOptions}
