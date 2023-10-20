@@ -19,13 +19,13 @@ const VolunteerCard = ({ name, role, experienceYears }: Props) => {
   };
 
   return (
-    <div className="shadow-sm rounded-lg border border-[hsl(240_5.9%_90%) w-[350px] p-6 flex flex-col gap-6">
+    <div className="shadow-sm rounded-lg border border-[hsl(240_5.9%_90%)] w-[350px] p-6 flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <span className="text-2xl font-semibold">כרטיס מתנדב</span>
         <Button
           variant="text"
           color="inherit"
-          startIcon={<EditIcon sx={{ marginLeft: "5px" }} />}
+          startIcon={<EditIcon className="ml-1" />}
           onClick={onEditModeClick}
         >
           עריכה
@@ -50,7 +50,14 @@ const VolunteerCard = ({ name, role, experienceYears }: Props) => {
           {/* <div className="h-16" /> */}
         </>
       )}
-      {editMode && (<div>מצב עריכה</div>)}
+      {editMode && (
+        <div>
+          <div className="flex justify-between">
+            <Button variant="outlined" color="inherit" className="px-4 py-2 text-sm hover:bg-[hsl(240_4.8%_95.9%)]">ביטול</Button>
+            <Button variant="contained" className="bg-[hsl(240_5.9%_10%)] hover:bg-[hsl(240_5.9%_10%/.9)] text-sm">אישור</Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
