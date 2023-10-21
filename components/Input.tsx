@@ -21,7 +21,6 @@ const Input: React.FC<InputProps> = ({
   onChange,
   onBlur,
 }) => {
-  debugger;
   const [field, meta] = useField(name);
   const inputType = type === "password" ? "password" : "text";
   const inputLabel = label || name;
