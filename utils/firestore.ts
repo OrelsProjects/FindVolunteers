@@ -1,18 +1,7 @@
-// import {
-//   DocumentReference,
-//   CollectionReference,
-//   DocumentData,
-// } from "@firebase/firestore-types";
-// import { collection, addDoc } from "firebase/firestore"; 
+import { collection } from "firebase/firestore";
+import { db } from "@/firebase";
 
-// import { db } from "@/firebase";
+import { VOLUNTEER_COLLECTION, USER_COLLECTION } from "@/lib/types";
 
-// const doc = (
-//   collection: CollectionReference,
-//   id: string
-// ): DocumentReference => {
-//   return collection.doc(id);
-// };
-
-// const col = (path: string): CollectionReference<DocumentData, DocumentData> =>
-//   collection(db, path);
+export const volunteersCol = collection(db, VOLUNTEER_COLLECTION);
+export const usersCol = collection(db, USER_COLLECTION);

@@ -1,22 +1,20 @@
 import {
-  collection,
   doc,
   addDoc,
   updateDoc,
   deleteDoc,
   getDoc,
 } from "firebase/firestore";
-import { db } from "@/firebase";
+import { volunteersCol } from "@/utils/firestore";
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
-import { VOLUNTEER_COLLECTION, Volunteer } from "@/lib/types";
+import { Volunteer } from "@/lib/types";
 import { decodeRequestBody } from "@/utils/api";
 
 export async function GET(req: NextApiRequest): Promise<NextResponse | void> {
   try {
     const id = req.query.id as string;
-    const col = collection(db, VOLUNTEER_COLLECTION);
-    const volunteer = await getDoc(doc(col, id));
+    const volunteer = await getDoc(doc(volunteersCol, id));
 
     return NextResponse.json(volunteer, { status: 200 });
   } catch (e) {
@@ -29,7 +27,7 @@ export async function POST(req: NextApiRequest): Promise<NextResponse | void> {
     const volunteer = await decodeRequestBody<Volunteer>(req);
 
     const volunteerRef = await addDoc(
-      collection(db, VOLUNTEER_COLLECTION),
+      volunteersCol,
       volunteer
     );
 
@@ -44,7 +42,7 @@ export async function PUT(req: NextApiRequest): Promise<NextResponse | void> {
     const volunteer = await decodeRequestBody<Volunteer>(req);
 
     const volunteerRef = doc(
-      collection(db, VOLUNTEER_COLLECTION),
+      volunteersCol,
       volunteer.id
     );
 
@@ -62,7 +60,7 @@ export async function DELETE(
   try {
     const volunteer = await decodeRequestBody<Volunteer>(req);
 
-    deleteDoc(doc(collection(db, VOLUNTEER_COLLECTION), volunteer.id));
+    deleteDoc(doc(volunteersCol, volunteer.id));
 
     return NextResponse.json({}, { status: 200 });
   } catch (e) {

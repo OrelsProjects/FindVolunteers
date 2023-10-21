@@ -13,7 +13,7 @@ function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const volunteer: Volunteer = new Volunteer("Orel", "Fullstack", 3);
+    const volunteer: Volunteer = new Volunteer("Fullstack", 4, "343");
 
     axios.post<Volunteer>("/api/volunteer", volunteer);
   }, []);
