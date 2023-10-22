@@ -5,6 +5,7 @@ import { useFormik, FormikProvider } from "formik";
 import * as Yup from "yup";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
+import { signIn, useSession } from "next-auth/react";
 
 // Define validation schema for the entire form
 const validationSchema = Yup.object({
@@ -14,6 +15,9 @@ const validationSchema = Yup.object({
 });
 
 const LoginPage = () => {
+  const { data: session } = useSession();
+  console.log('session', session);
+
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     onSubmit: (values) => {
@@ -43,6 +47,7 @@ const LoginPage = () => {
           >
             Login
           </Button>
+          <button onClick={() => signIn()}>Sign in</button>
         </form>
       </FormikProvider>
     </div>

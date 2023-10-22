@@ -51,6 +51,10 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      backgroundColor: {
+        linkedin: "#017fbc",
+        linkedinHover: "#0071a7",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

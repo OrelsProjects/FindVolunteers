@@ -1,7 +1,6 @@
-import React, { useCallback } from "react";
-import Button from "./Button";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
-import axios from "axios"; // Install it if you haven't already, using npm install axios
+import { Button } from "./ui/button";
 
 export interface LinkedinLoginProps {
   onSuccess?: () => void;
@@ -12,15 +11,10 @@ export default function LinkedinLogin({
   onSuccess,
   onFailure,
 }: LinkedinLoginProps) {
-  const handleLogin = useCallback(() => {
-    // Redirect to the server-side route that starts the LinkedIn OAuth flow
-    window.location.href = "http://localhost:3001/auth/linkedin";
-  }, []);
-
   return (
     <Button
-      className="bg-linkedin hover:bg-linkedin text-white rounded-full py-2 px-4"
-      onClick={handleLogin}
+      className="bg-linkedin hover:bg-linkedinHover text-white rounded-full py-2 px-4"
+      onClick={() => signIn()}
     >
       <span className="flex items-center">
         Log in with LinkedIn
