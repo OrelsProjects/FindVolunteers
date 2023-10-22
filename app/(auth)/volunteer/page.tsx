@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
 import LinkedinLogin from "../../../components/LinkedinLogin";
-
 
 const Volunteer = () => {
   return (
