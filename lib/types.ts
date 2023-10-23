@@ -8,17 +8,14 @@ export class Volunteer {
   role: string;
   experience: number;
   userId: string;
+  isEnabled?: boolean;
 
-  constructor(
-    role: string,
-    experience: number,
-    userId: string,
-    id?: string
-  ) {
+  constructor(role: string, experience: number, userId: string, id?: string, isEnabled?: boolean) {
     this.id = id;
     this.role = role;
     this.experience = experience;
     this.userId = userId;
+    this.isEnabled = isEnabled;
   }
 
   toDocument(): DocumentData {

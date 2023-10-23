@@ -1,10 +1,4 @@
-import {
-  doc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, addDoc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import { volunteersCol } from "@/utils/firestore";
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
@@ -26,10 +20,7 @@ export async function POST(req: NextApiRequest): Promise<NextResponse | void> {
   try {
     const volunteer = await decodeRequestBody<Volunteer>(req);
 
-    const volunteerRef = await addDoc(
-      volunteersCol,
-      volunteer
-    );
+    const volunteerRef = await addDoc(volunteersCol, volunteer);
 
     return NextResponse.json({ id: volunteerRef.id }, { status: 200 });
   } catch (e) {
@@ -40,17 +31,14 @@ export async function POST(req: NextApiRequest): Promise<NextResponse | void> {
 export async function PUT(req: NextApiRequest): Promise<NextResponse | void> {
   try {
     const volunteer = await decodeRequestBody<Volunteer>(req);
-
-    const volunteerRef = doc(
-      volunteersCol,
-      volunteer.id
-    );
-
+    
+    const volunteerRef = doc(volunteersCol, volunteer.id);
+    
     updateDoc(volunteerRef, volunteer.toDocument());
 
     return NextResponse.json({ id: volunteerRef.id }, { status: 200 });
   } catch (e) {
-    return NextResponse.json({ error: "Request failed" }, { status: 500 });
+    return NextResponse.json({ error: JSON.stringify(e) }, { status: 500 });
   }
 }
 

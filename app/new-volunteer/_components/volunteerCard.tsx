@@ -10,7 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Toggle from "@/components/ui/toggle";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,16 +33,24 @@ const formSchema = z.object({
     .number({ invalid_type_error: "יש להזין מספר תקין גדול מ-0" })
     .positive("יש להזין מספר תקין גדול מ-0")
     .max(99, "לא נסחפנו?"),
+  isEnabled: z.boolean().default(true).optional(),
 });
 
 interface Props {
   name: string;
   role: string;
   experienceYears: number;
+  isEnabled?: boolean;
 }
 
-const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
+const VolunteerCard = ({
+  name = "",
+  role = "",
+  experienceYears = 1,
+  isEnabled = true,
+}: Props) => {
   const [editMode, setEditMode] = useState(false);
+  const [profileEnabled, setProfileEnabled] = useState(isEnabled);
 
   const form = useForm<z.infer<typeof formSchema>>({
     // reValidateMode: 'onChange',
@@ -50,11 +60,15 @@ const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
       name,
       role,
       experienceYears,
+      isEnabled,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("values", values);
+    values.isEnabled = profileEnabled;
+    await axios.put("/api/volunteer", values);
+    setEditMode(false);
   }
 
   const onEditModeClick = () => {
@@ -100,6 +114,7 @@ const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
         <div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <Toggle onToggle={setProfileEnabled} default={isEnabled} />
               <FormField
                 control={form.control}
                 name="name"
