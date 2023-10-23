@@ -65,7 +65,9 @@ const VolunteerCard = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("values", values);
-    await axios.put("/api/volunteer", values);
+    // TODO: need to check here if the volunteer has an id
+    // if so, then use - axious.put (update), else - post (new)
+    await axios.post("/api/volunteer", values);
     setEditMode(false);
   }
 
@@ -80,11 +82,7 @@ const VolunteerCard = ({
   };
 
   return (
-    <div
-      className={`shadow-sm rounded-lg border border-[hsl(240_5.9%_90%)] w-[350px] p-6 flex flex-col gap-6 ${
-        editMode ? "h-[500px]" : "h-[338px]"
-      } transition-[height] duration-250 ease-in-out`}
-    >
+    <div className="shadow-sm rounded-lg border border-[hsl(240_5.9%_90%)] w-[350px] p-6 flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <span className="text-2xl font-semibold">כרטיס מתנדב</span>
         {!editMode && (

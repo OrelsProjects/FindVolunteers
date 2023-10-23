@@ -5,13 +5,15 @@ export const USER_COLLECTION = "users";
 
 export class Volunteer {
   id?: string;
+  name: string;
   role: string;
   experience: number;
   userId: string;
   isEnabled?: boolean;
 
-  constructor(role: string, experience: number, userId: string, id?: string, isEnabled?: boolean) {
+  constructor(name: string, role: string, experience: number, userId: string, id?: string, isEnabled?: boolean) {
     this.id = id;
+    this.name = name;
     this.role = role;
     this.experience = experience;
     this.userId = userId;
@@ -20,8 +22,10 @@ export class Volunteer {
 
   toDocument(): DocumentData {
     return {
+      name: this.name,
       role: this.role,
       experience: this.experience,
+      isEnabled: this.isEnabled,
       userId: this.userId,
     };
   }
