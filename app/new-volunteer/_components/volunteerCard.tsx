@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Toggle from "@/components/ui/toggle";
+import { Switch } from "@/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Pencil } from "lucide-react";
@@ -33,7 +33,7 @@ const formSchema = z.object({
     .number({ invalid_type_error: "יש להזין מספר תקין גדול מ-0" })
     .positive("יש להזין מספר תקין גדול מ-0")
     .max(99, "לא נסחפנו?"),
-  isEnabled: z.boolean().default(true).optional(),
+  isEnabled: z.boolean().default(true),
 });
 
 interface Props {
@@ -82,7 +82,11 @@ const VolunteerCard = ({
   };
 
   return (
-    <div className="shadow-sm rounded-lg border border-[hsl(240_5.9%_90%)] w-[350px] p-6 flex flex-col gap-6">
+    <div
+      className={`shadow-sm rounded-lg border border-[hsl(240_5.9%_90%)] w-[350px] p-6 flex flex-col gap-6 ${
+        editMode ? "h-[500px]" : "h-[338px]"
+      } transition-[height] duration-250 ease-in-out`}
+    >
       <div className="flex justify-between items-center">
         <span className="text-2xl font-semibold">כרטיס מתנדב</span>
         {!editMode && (
@@ -106,6 +110,10 @@ const VolunteerCard = ({
               <span className="font-semibold">שנות ניסיון:</span>
               <span className="text-sm">{experienceYears}</span>
             </div>
+            <div className="flex flex-col">
+              <span className="font-semibold">אפשר לאחרים למצוא אותך:</span>
+              <span className="text-sm">{isEnabled ? "כן" : "לא"}</span>
+            </div>
           </div>
           {/* <div className="h-16" /> */}
         </>
@@ -114,7 +122,6 @@ const VolunteerCard = ({
         <div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <Toggle onToggle={setProfileEnabled} default={isEnabled} />
               <FormField
                 control={form.control}
                 name="name"
@@ -161,6 +168,25 @@ const VolunteerCard = ({
                       <Input {...field} />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isEnabled"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        אפשר לאחרים למצוא אותך
+                      </FormLabel>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
