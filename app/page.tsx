@@ -2,21 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import RadioButtonGroup from "../components/RadioButtonGroup";
-import { useEffect } from "react";
-import axios, { AxiosRequestConfig } from "axios";
-import { Volunteer } from "@/lib/types";
 
 const REASON_VOLUNTEER = "volunteer";
 const REASON_PROJECT_OWNER = "project_owner";
 
 function Home() {
   const router = useRouter();
-
-  useEffect(() => {
-    const volunteer: Volunteer = new Volunteer("Fullstack", 4, "343");
-
-    axios.post<Volunteer>("/api/volunteer", volunteer);
-  }, []);
 
   const onReasonSelected = (reason: string) => {
     if (reason === REASON_VOLUNTEER) {

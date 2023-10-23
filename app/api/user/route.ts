@@ -1,13 +1,10 @@
-import { doc, addDoc, updateDoc, deleteDoc, getDoc } from "firebase/firestore";
 import { usersCol } from "@/utils/firestore";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
-import { User } from "@/lib/types";
-import { decodeRequestBody } from "@/utils/api";
+import { addDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest): Promise<NextResponse | void> {
+export async function GET(req: NextRequest): Promise<NextResponse | void> {
   try {
-    const id = req.query.id as string;
+    const id = req.nextUrl.searchParams.get('id') || '';
     const user = await getDoc(doc(usersCol, id));
 
     return NextResponse.json(user, { status: 200 });
@@ -16,10 +13,9 @@ export async function GET(req: NextApiRequest): Promise<NextResponse | void> {
   }
 }
 
-export async function POST(req: NextApiRequest): Promise<NextResponse | void> {
+export async function POST(req: NextRequest): Promise<NextResponse | void> {
   try {
-    const user = await decodeRequestBody<User>(req);
-
+    const user = await req.json();
     const userRef = await addDoc(usersCol, user);
 
     return NextResponse.json({ id: userRef.id }, { status: 200 });
@@ -28,10 +24,9 @@ export async function POST(req: NextApiRequest): Promise<NextResponse | void> {
   }
 }
 
-export async function PUT(req: NextApiRequest): Promise<NextResponse | void> {
+export async function PUT(req: NextRequest): Promise<NextResponse | void> {
   try {
-    const user = await decodeRequestBody<User>(req);
-
+    const user = await req.json();
     const userRef = doc(usersCol, user.id);
 
     updateDoc(userRef, user.toDocument());
@@ -43,10 +38,10 @@ export async function PUT(req: NextApiRequest): Promise<NextResponse | void> {
 }
 
 export async function DELETE(
-  req: NextApiRequest
+  req: NextRequest
 ): Promise<NextResponse | void> {
   try {
-    const id = req.query.id as string;
+    const id = req.nextUrl.searchParams.get('id') || '';
 
     await deleteDoc(doc(usersCol, id));
 
