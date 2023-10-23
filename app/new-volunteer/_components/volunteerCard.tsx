@@ -50,7 +50,6 @@ const VolunteerCard = ({
   isEnabled = true,
 }: Props) => {
   const [editMode, setEditMode] = useState(false);
-  const [profileEnabled, setProfileEnabled] = useState(isEnabled);
 
   const form = useForm<z.infer<typeof formSchema>>({
     // reValidateMode: 'onChange',
@@ -66,7 +65,6 @@ const VolunteerCard = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("values", values);
-    values.isEnabled = profileEnabled;
     await axios.put("/api/volunteer", values);
     setEditMode(false);
   }
