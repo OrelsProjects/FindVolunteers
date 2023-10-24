@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 
@@ -8,6 +9,8 @@ const REASON_PROJECT_OWNER = "project_owner";
 
 function Home() {
   const router = useRouter();
+  const { data: session } = useSession();
+  console.log(session)
 
   const onReasonSelected = (reason: string) => {
     if (reason === REASON_VOLUNTEER) {

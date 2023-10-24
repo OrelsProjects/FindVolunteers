@@ -18,6 +18,22 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
+  callbacks: {
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   return true
+    // },
+    async session({ session, token } : { session: any, token: any}) {
+      // Send properties to the client, like an access_token from a provider.
+      if (session && session.user) {
+        const extraUserInfo = { _id: 1}; //await fetchUser(session.user.email);
+        if (token) {
+          session.accessToken = token.accessToken;
+        }
+        session.user = { ...session.user, ...extraUserInfo };
+      }
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
