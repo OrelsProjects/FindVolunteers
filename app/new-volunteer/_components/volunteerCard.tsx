@@ -10,7 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,15 +33,22 @@ const formSchema = z.object({
     .number({ invalid_type_error: "יש להזין מספר תקין גדול מ-0" })
     .positive("יש להזין מספר תקין גדול מ-0")
     .max(99, "לא נסחפנו?"),
+  isEnabled: z.boolean().default(true),
 });
 
 interface Props {
   name: string;
   role: string;
   experienceYears: number;
+  isEnabled?: boolean;
 }
 
-const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
+const VolunteerCard = ({
+  name = "",
+  role = "",
+  experienceYears = 1,
+  isEnabled = true,
+}: Props) => {
   const [editMode, setEditMode] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,11 +59,16 @@ const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
       name,
       role,
       experienceYears,
+      isEnabled,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("values", values);
+    // TODO: need to check here if the volunteer has an id
+    // if so, then use - axious.put (update), else - post (new)
+    await axios.post("/api/volunteer", values);
+    setEditMode(false);
   }
 
   const onEditModeClick = () => {
@@ -91,6 +105,10 @@ const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
             <div className="flex flex-col">
               <span className="font-semibold">שנות ניסיון:</span>
               <span className="text-sm">{experienceYears}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="font-semibold">אפשר לאחרים למצוא אותך:</span>
+              <span className="text-sm">{isEnabled ? "כן" : "לא"}</span>
             </div>
           </div>
           {/* <div className="h-16" /> */}
@@ -146,6 +164,25 @@ const VolunteerCard = ({ name = "", role = "", experienceYears = 1}: Props) => {
                       <Input {...field} />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isEnabled"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        אפשר לאחרים למצוא אותך
+                      </FormLabel>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
