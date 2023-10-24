@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 
@@ -34,6 +34,7 @@ function Home() {
           { label: "אני מחפש מפתח/ת", value: REASON_PROJECT_OWNER },
         ]}
       />
+      <button onClick={() => signOut()}>signout</button>
     </div>
   );
 }

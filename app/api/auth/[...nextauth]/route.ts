@@ -1,3 +1,5 @@
+import { volunteersCol } from "@/utils/firestore";
+import { getDocs, limit, query, where } from "firebase/firestore";
 import NextAuth from "next-auth";
 import LinkedInProvider from "next-auth/providers/linkedin";
 
@@ -19,19 +21,25 @@ export const authOptions = {
     // ...add more providers here
   ],
   callbacks: {
-    // async signIn({ user, account, profile, email, credentials }) {
-    //   return true
-    // },
-    async session({ session, token } : { session: any, token: any}) {
-      // Send properties to the client, like an access_token from a provider.
-      if (session && session.user) {
-        const extraUserInfo = { _id: 1}; //await fetchUser(session.user.email);
-        if (token) {
-          session.accessToken = token.accessToken;
+    async signIn(user: any) {
+      try {
+        // Fetch additional user data from your database based on email
+        const res = await getDocs(
+          query(volunteersCol, where("email", "==", user.user.email), limit(1))
+        );
+        let additionalUserData = {};
+        if (res.docs.length > 0) {
+          additionalUserData = res.docs[0].data();
         }
-        session.user = { ...session.user, ...extraUserInfo };
+
+        // Merge additional data into the user object
+        return {
+          ...user,
+          ...additionalUserData,
+        };
+      } catch (e) {
+        console.log(e);
       }
-      return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
