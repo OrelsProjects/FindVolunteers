@@ -1,3 +1,4 @@
+import { ApiResponse, Volunteer, Volunteers } from "@/lib/types";
 import { volunteersCol } from "@/utils/firestore";
 import {
   addDoc,
@@ -9,10 +10,24 @@ import {
   updateDoc,
   limit,
   getDocs,
+  DocumentData,
+  DocumentSnapshot,
+  FirestoreDataConverter,
+  DocumentReference,
 } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest): Promise<NextResponse | void> {
+const converterVolunteer: FirestoreDataConverter<Volunteer | null> = {
+  toFirestore: (volunteer: Volunteer) => Volunteer.toFirestore(volunteer),
+  fromFirestore: (snap: DocumentSnapshot<DocumentData>): Volunteer | null =>
+    Volunteer.fromFirestore(snap) || null,
+};
+
+export async function GET(
+  req: NextRequest
+): Promise<
+  NextResponse<ApiResponse<Volunteer | Volunteers | null | undefined>>
+> {
   try {
     const id = req.nextUrl.searchParams.get("id") || "";
     // Many volunteers request
@@ -35,56 +50,88 @@ export async function GET(req: NextRequest): Promise<NextResponse | void> {
         volunteersCol,
         orderBy("createdAt", "desc"),
         limit(limitNum)
-      );
+      ).withConverter(converterVolunteer);
       const snapshot = await getDocs(q);
-      const volunteers = snapshot.docs.map((doc) => doc.data());
-      return NextResponse.json(volunteers, { status: 200 });
+
+      const volunteers = snapshot.docs.map((doc) => doc.data()) ?? [];
+
+      return NextResponse.json({ items: volunteers }, { status: 200 });
     } else {
       // Single volunteer request
-      const volunteer = await getDoc(doc(volunteersCol, id));
-      const volunteerData = volunteer.data();
-      return NextResponse.json(volunteerData, { status: 200 });
+      const volunteerDoc: DocumentReference<Volunteer | null> = doc(
+        volunteersCol,
+        id
+      ).withConverter(converterVolunteer);
+
+      const volunteer: DocumentSnapshot<Volunteer | null> = await getDoc(
+        volunteerDoc
+      );
+      const volunteerData: Volunteer | null = volunteer.data() ?? null;
+      return NextResponse.json({ items: volunteerData }, { status: 200 });
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
   }
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse | void> {
+export async function POST(
+  req: NextRequest
+): Promise<NextResponse<ApiResponse<string | null>> | void> {
   try {
-    const volunteer = await req.json();
-    volunteer.createdAt = new Date();
-    const volunteerRef = await addDoc(volunteersCol, volunteer);
+    const volunteer: Volunteer = await req.json();
+    const volunteerJson = JSON.parse(JSON.stringify(volunteer));
+    volunteerJson.createdAt = new Date();
+    volunteerJson.lastUpdatedAt = new Date();
 
-    return NextResponse.json({ id: volunteerRef.id }, { status: 200 });
+    const volunteerRef = await addDoc(volunteersCol, volunteerJson);
+
+    return NextResponse.json({ items: volunteerRef.id }, { status: 200 });
   } catch (e) {
+    console.error(e);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
   }
 }
 
-export async function PUT(req: NextRequest): Promise<NextResponse | void> {
+export async function PUT(
+  req: NextRequest
+): Promise<NextResponse<ApiResponse<string | null>> | void> {
   try {
-    const volunteer = await req.json();
-    volunteer.lastUpdatedAt = new Date();
-    const volunteerRef = doc(volunteersCol, volunteer.id);
+    const volunteer: Volunteer = await req.json();
 
-    updateDoc(volunteerRef, volunteer);
+    const volunteerRef = doc(volunteersCol, volunteer.id).withConverter({
+      toFirestore: (volunteer: Volunteer) => Volunteer.toFirestore(volunteer), // Add the `toFirestore()` converter
+      fromFirestore: (snap: DocumentSnapshot<DocumentData>) =>
+        Volunteer.fromFirestore(snap), // Add the `fromFirestore()` converter
+    });
+    const volunteerJson = JSON.parse(JSON.stringify(volunteer));
+    volunteerJson.lastUpdatedAt = new Date();
 
-    return NextResponse.json({}, { status: 200 });
+    await updateDoc(volunteerRef, volunteerJson);
+
+    return NextResponse.json({ items: volunteer.id }, { status: 200 });
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
   }
 }
-
-export async function DELETE(req: NextRequest): Promise<NextResponse | void> {
+export async function DELETE(
+  req: NextRequest
+): Promise<NextResponse<ApiResponse<string | null>> | void> {
   try {
-    const volunteer = await req.json();
-    deleteDoc(doc(volunteersCol, volunteer.id));
+    const volunteer: Volunteer = await req.json();
 
-    return NextResponse.json({}, { status: 200 });
+    const volunteerRef = doc(volunteersCol, volunteer.id).withConverter({
+      toFirestore: (volunteer: Volunteer) => Volunteer.toFirestore(volunteer),
+      fromFirestore: (snap: DocumentSnapshot<DocumentData>) =>
+        Volunteer.fromFirestore(snap),
+    });
+
+    await deleteDoc(volunteerRef);
+
+    return NextResponse.json({ items: volunteer.id }, { status: 200 });
   } catch (e) {
+    console.error(e);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
   }
 }
