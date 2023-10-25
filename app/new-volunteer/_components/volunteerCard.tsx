@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { Volunteer } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Pencil } from "lucide-react";
@@ -36,19 +37,12 @@ const formSchema = z.object({
   isEnabled: z.boolean().default(true),
 });
 
-interface Props {
-  name: string;
-  role: string;
-  experienceYears: number;
-  isEnabled?: boolean;
-}
-
 const VolunteerCard = ({
   name = "",
   role = "",
   experienceYears = 1,
   isEnabled = true,
-}: Props) => {
+}: Volunteer) => {
   const [editMode, setEditMode] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
