@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { UseTableDataItem } from "@/lib/types";
+import { TableTypes, UseTableDataItem } from "@/lib/types";
 
 export interface UseTableProps<T> {
-  type: UseTableTypes;
+  type: TableTypes;
   initialPage: number;
   limit: number;
 }
@@ -23,12 +23,6 @@ interface UseTable<T> {
   itemClicked: (item: T) => void;
   itemRemoved: (itemId: string) => void;
 }
-
-export enum UseTableTypes {
-  VOLUNTEERS = "VOLUNTEERS",
-  // add more types here
-}
-
 function useTable<T extends UseTableDataItem<T>>({
   type,
   initialPage,
@@ -39,9 +33,9 @@ function useTable<T extends UseTableDataItem<T>>({
   const [loading, setLoading] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(0);
 
-  const getUrl = (type: UseTableTypes): string => {
+  const getUrl = (type: TableTypes): string => {
     switch (type) {
-      case UseTableTypes.VOLUNTEERS:
+      case TableTypes.VOLUNTEERS:
         return "volunteer";
       default:
         throw new Error("Invalid type");

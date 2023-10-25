@@ -6,6 +6,11 @@ export const USER_COLLECTION = "users";
 
 export type Volunteers = Volunteer[];
 
+export enum TableTypes {
+  VOLUNTEERS = "VOLUNTEERS",
+  // add more types here
+}
+
 export interface ApiResponse<T> {
   items?: T | T[] | null;
   error?: string;
