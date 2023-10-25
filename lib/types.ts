@@ -7,15 +7,22 @@ export class Volunteer {
   id?: string;
   name: string;
   role: string;
-  experience: number;
-  userId: string;
+  experienceYears: number;
+  userId?: string; // TODO: Consider a new db design for this. A volunteer can be a project owner too.
   isEnabled?: boolean;
 
-  constructor(name: string, role: string, experience: number, userId: string, id?: string, isEnabled?: boolean) {
+  constructor(
+    name: string,
+    role: string,
+    experienceYears: number,
+    userId?: string,
+    id?: string,
+    isEnabled?: boolean
+  ) {
     this.id = id;
     this.name = name;
     this.role = role;
-    this.experience = experience;
+    this.experienceYears = experienceYears;
     this.userId = userId;
     this.isEnabled = isEnabled;
   }
@@ -24,7 +31,7 @@ export class Volunteer {
     return {
       name: this.name,
       role: this.role,
-      experience: this.experience,
+      experienceYears: this.experienceYears,
       isEnabled: this.isEnabled,
       userId: this.userId,
     };
