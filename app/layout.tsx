@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import RecoidContextProvider from "./recoilContextProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default async function RootLayout({
   return (
     <html lang="en" dir="rtl">
       <body className={inter.className}>
-        <Provider session={session}>{children}</Provider>
+        <Provider session={session}>
+          <RecoidContextProvider>{children}</RecoidContextProvider>
+        </Provider>
       </body>
     </html>
   );

@@ -1,12 +1,20 @@
 import { projectOwnersCol, usersCol, volunteersCol } from "@/utils/firestore";
-import { addDoc, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import {
+  addDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest): Promise<NextResponse | void> {
   try {
     // get the email and find volunteer + project owner with this email
     const email = req.nextUrl.searchParams.get("email") || "";
-    console.log('email', email);
+    console.log("email", email);
     // Create queries for both collections
     const volunteersQuery = query(volunteersCol, where("email", "==", email));
     const projectOwnersQuery = query(
@@ -21,20 +29,20 @@ export async function GET(req: NextRequest): Promise<NextResponse | void> {
     ]);
 
     // Extract data from snapshots
-    const volunteersData = volunteersSnapshot.docs.map((doc) => doc.data());
-    const projectOwnersData = projectOwnersSnapshot.docs.map((doc) =>
-      doc.data()
-    );
+    const volunteersData = volunteersSnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+    const projectOwnersData = projectOwnersSnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
 
     // Combine data from both collections and return the response
     const responseData = {
-      volunteers: volunteersData,
-      projectOwners: projectOwnersData,
+      volunteer: volunteersData[0],
+      projectOwner: projectOwnersData[0],
     };
-
-    // console.log(responseData);
-
-    // const user = await getDoc(doc(usersCol, email));
 
     return NextResponse.json(responseData, { status: 200 });
   } catch (e) {

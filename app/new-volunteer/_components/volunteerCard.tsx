@@ -14,7 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Pencil } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -42,6 +42,7 @@ interface Props {
   experienceYears: number;
   isEnabled?: boolean;
   id: string;
+  onSubmit: (values: any) => void;
 }
 
 const VolunteerCard = ({
@@ -50,6 +51,7 @@ const VolunteerCard = ({
   experienceYears = 1,
   isEnabled = true,
   id,
+  onSubmit,
 }: Props) => {
   const [editMode, setEditMode] = useState(false);
 
@@ -65,8 +67,27 @@ const VolunteerCard = ({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  useEffect(() => {
+    if (editMode) {
+      form.reset({
+        name,
+        role,
+        experienceYears,
+        isEnabled,
+      });
+    }
+  }, [editMode, form.reset]);
+
+  async function onSubmitClick(values: z.infer<typeof formSchema>) {
     console.log("values", values);
+    if (name === values.name
+      && role === values.role
+      && experienceYears === values.experienceYears
+      && isEnabled === values.isEnabled) {
+        // no changes were made
+        // TODO: toast - changes saved sucessfully
+        setEditMode(false);
+      }
     // TODO: need to check here if the volunteer has an id
     // if so, then use - axious.put (update), else - post (new)
     if (id) {
@@ -74,6 +95,8 @@ const VolunteerCard = ({
     } else {
       await axios.post("/api/volunteer", values);
     }
+    // TODO: toast - changes saved successfully
+    onSubmit(values);
     setEditMode(false);
   }
 
@@ -123,7 +146,7 @@ const VolunteerCard = ({
       {editMode && (
         <div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmitClick)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="name"

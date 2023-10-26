@@ -17,11 +17,18 @@ interface CustomSession extends Session {
 }
 
 const NewVolunteer = () => {
-  // get user from session and display his info
   // @ts-ignore
   // const { data: session } : { data: CustomSession} = useSession();
-  const { session, userData } = useRequireAuth();
-  console.log('user data in new volunteer', userData);
+
+  // get user from session and display his info
+  const { userData, updateVolunteerData }: { userData: any; setUserData: () => void } =
+    useRequireAuth();
+  console.log("user data in new volunteer", userData);
+
+  if (!userData) {
+    // maybe show here spinner
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen p-8">
@@ -29,11 +36,12 @@ const NewVolunteer = () => {
         יצרנו כרטיס מתנדב על פי חשבון הLinkedin שלך
       </h1>
       <VolunteerCard
-        name={session?.user?.name || ""}
-        role={session?.user?.role || ""}
-        experienceYears={session?.user?.experienceYears || 1}
-        // id={session?.user?.id || ""}
-        id={"ozKSEjIa47XwVUnUJh0F"}
+        name={userData?.volunteer?.name || ""}
+        role={userData?.volunteer?.role || ""}
+        experienceYears={userData?.volunteer?.experienceYears || 1}
+        id={userData?.volunteer?.id || ""}
+        isEnabled={userData?.volunteer ? userData?.volunteer.isEnabled : true}
+        onSubmit={updateVolunteerData}
       />
     </div>
   );

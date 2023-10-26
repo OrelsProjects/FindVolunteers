@@ -1,11 +1,21 @@
 "use client";
 
 import useRequireAuth from "@/hooks/useRequireAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import LinkedinLogin from "../../../components/LinkedinLogin";
 
 const Volunteer = () => {
-  const { session, userData } = useRequireAuth();
-  console.log('user data in volunteer', userData);
+  const { userData } = useRequireAuth();
+  console.log("user data in volunteer", userData);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (userData) {
+      router.push("/new-volunteer");
+    }
+  }, [userData]);
+
   return (
     <div className="flex flex-col items-center justify-center h-screen p-8 text-center">
       <h1 className="font-bold text-2xl">
@@ -13,8 +23,8 @@ const Volunteer = () => {
         <br /> נעשה כל שביכולנתו על מנת לקשר אותך לאנשים הנכונים
       </h1>
       <p className="mt-4">
-        למטרת שמירה על הביטחון שלכם/ן ושל כולנו, נבקש להתחבר באמצעות Linkedin
-        על מנת לאמת את זהותכם
+        למטרת שמירה על הביטחון שלכם/ן ושל כולנו, נבקש להתחבר באמצעות Linkedin על
+        מנת לאמת את זהותכם
       </p>
       <p className="text-sm mb-4">
         *פרופיל הLinkedin ישמש גם כצורת ההתקשרות ביניכם/ן וממנו נמשוך את הפרטים
