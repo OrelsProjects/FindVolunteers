@@ -11,7 +11,8 @@ const REASON_PROJECT_OWNER = "project_owner";
 
 function Home() {
   const router = useRouter();
-  const { session, userData } : { session: any, userData: any} = useRequireAuth();
+  const { session, userData }: { session: any; userData: any } =
+    useRequireAuth();
   console.log("userData in main page", userData);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ function Home() {
     }
   }, [userData]);
 
-  if (!userData || (userData && userData.volunteer)) {
+  if (session && (!userData || (userData && userData.volunteer))) {
     // maybe show here spinner
     return null;
   }
@@ -34,20 +35,18 @@ function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-6 m-auto">
-      <h1 className="font-bold text-2xl">
-        מקשרים בין מפתחים ומפתחות לבעלי ובעלות פרויקטים שמטרתם להעניק סיוע בימי
-        מלחמה
+    <div className="flex flex-col gap-6 m-auto items-center p-8">
+      <h1 className="font-bold text-4xl text-center">
+        מקשרים בין מפתחים לבעלי פרויקטים <br /> שמטרתם להעניק סיוע בימי מלחמה
       </h1>
-      <p>יש לבחור את הסיבה לשמה הגעתם לאתר:</p>
+      <p className="text-2xl">אז מה תרצו לעשות?</p>
       <RadioButtonGroup
         onClick={onReasonSelected}
         items={[
           { label: "אני רוצה להתנדב", value: REASON_VOLUNTEER },
-          { label: "אני מחפש מפתח/ת", value: REASON_PROJECT_OWNER },
+          { label: "אני מחפש מפתחים", value: REASON_PROJECT_OWNER },
         ]}
       />
-      <button onClick={() => signOut()}>signout</button>
     </div>
   );
 }

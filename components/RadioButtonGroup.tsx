@@ -1,5 +1,6 @@
 import React, { useState, FC } from "react";
-import Button from "@/components/Button"; // Import the Button component from Material-UI
+import { Button } from "@/components/ui/button";
+// import Button from "@/components/Button"; // Import the Button component from Material-UI
 
 interface RadioButtonItemProps {
   label: string;
@@ -22,16 +23,9 @@ const RadioButtonGroup: FC<RadioButtonGroupProps> = ({ items, onClick }) => {
   };
 
   return (
-    <div>
+    <div className="flex gap-4">
       {items.map((item) => (
-        <Button
-          key={item.value}
-          onClick={() => handleClick(item.value)} // Call handleClick with the value when the button is clicked
-          variant="contained"
-          className="text-black"
-          style={{ border: "1px solid black" }}
-          disableElevation
-        >
+        <Button key={item.value} onClick={() => handleClick(item.value)}>
           {item.label}
         </Button>
       ))}

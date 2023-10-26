@@ -27,6 +27,7 @@ function useRequireAuth() {
           cache: "no-store",
         });
         const result = await data.json();
+        console.log('user data result', result);
         setUserData(result);
         isLoading = false;
       };
@@ -39,12 +40,12 @@ function useRequireAuth() {
     }
 
     // If there is no active session, redirect to the login page
-    if (!session) {
-      router.push("/"); // Redirect to your login page
-    }
+    // if (!session) {
+    //   router.push("/"); // Redirect to your login page
+    // }
   }, [status, session, router, userData]);
 
-  return { session, status, userData, updateVolunteerData };
+  return { session, status, userData, updateVolunteerData, setUserData };
 }
 
 export default useRequireAuth;

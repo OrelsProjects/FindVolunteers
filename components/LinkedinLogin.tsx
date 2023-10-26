@@ -24,14 +24,14 @@ export default function LinkedinLogin({
       onClick={login}
     >
       <span className="flex items-center">
-        Log in with LinkedIn
         <Image
           src="/linkedin_icon.png"
           alt="LinkedIn"
-          className="mr-2"
+          className="ml-2"
           width={24}
           height={24}
         />
+        התחבר עם לינקדאין
       </span>
     </Button>
   );
