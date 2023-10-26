@@ -1,5 +1,5 @@
-import BasicTable from "@/components/ui/table";
-import { TableTypes } from "@/lib/types";
+import BasicTable from "../../components/ui/table";
+import { TableTypes } from "../../lib/types";
 import React from "react";
 
 const Volunteers = () => {

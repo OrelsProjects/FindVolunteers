@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import useTable, { UseTableProps } from "../../hooks/useTable"; // Import the useTable hook
-import { TableTypes, UseTableDataItem } from "@/lib/types";
+import { TableTypes, UseTableDataItem } from "../../lib/types";
 
 export interface BasicTableProps {
   type: TableTypes;
