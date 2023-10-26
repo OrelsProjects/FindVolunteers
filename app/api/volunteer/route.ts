@@ -32,7 +32,9 @@ export async function PUT(req: NextRequest): Promise<NextResponse | void> {
     const volunteer = await req.json();
     const volunteerRef = doc(volunteersCol, volunteer.id);
 
-    updateDoc(volunteerRef, volunteer);
+    const { id, ...volunteerDataToUpdate } = volunteer;
+
+    updateDoc(volunteerRef, volunteerDataToUpdate);
 
     return NextResponse.json({ id: volunteerRef.id }, { status: 200 });
   } catch (e) {

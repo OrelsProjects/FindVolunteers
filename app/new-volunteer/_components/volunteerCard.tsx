@@ -42,6 +42,7 @@ interface Props {
   role: string;
   experienceYears: number;
   isEnabled?: boolean;
+  email: string;
   id: string;
   onSubmit: (values: any) => void;
 }
@@ -51,10 +52,11 @@ const VolunteerCard = ({
   role = "",
   experienceYears = 1,
   isEnabled = true,
+  email,
   id,
   onSubmit,
 }: Props) => {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(!role);
 
   const form = useForm<z.infer<typeof formSchema>>({
     // reValidateMode: 'onChange',
@@ -97,19 +99,18 @@ const VolunteerCard = ({
     // if so, then use - axious.put (update), else - post (new)
     let updateValuesPromise;
     if (id) {
-      // await axios.put("/api/volunteer", { ...values, id });
       updateValuesPromise = axios.put("/api/volunteer", { ...values, id });
     } else {
-      // await axios.post("/api/volunteer", values);
-      updateValuesPromise = axios.post("/api/volunteer", values);
+      updateValuesPromise = axios.post("/api/volunteer", { ...values, email });
     }
     toast.promise(updateValuesPromise, {
       loading: "שומר...",
       success: "השינויים נשמרו בהצלחה",
       error: "חלה שגיאה בשמירה",
     });
-    await updateValuesPromise;
-    onSubmit(values);
+    const newID = await updateValuesPromise;
+    console.log("newID", newID);
+    onSubmit({ ...values, email, id: id ? id : newID.data.id });
     setEditMode(false);
   }
 
@@ -232,7 +233,7 @@ const VolunteerCard = ({
                 )}
               />
               <div className="flex justify-between pt-2">
-                <Button variant="outline" onClick={onCancel}>
+                <Button variant="outline" onClick={onCancel} disabled={!role}>
                   ביטול
                 </Button>
                 <Button type="submit">אישור</Button>
