@@ -3,6 +3,7 @@
 import useRequireAuth from "@/hooks/useRequireAuth";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import RadioButtonGroup from "../components/RadioButtonGroup";
 
 const REASON_VOLUNTEER = "volunteer";
@@ -10,8 +11,19 @@ const REASON_PROJECT_OWNER = "project_owner";
 
 function Home() {
   const router = useRouter();
-  const { session, userData } = useRequireAuth();
+  const { session, userData } : { session: any, userData: any} = useRequireAuth();
   console.log("userData in main page", userData);
+
+  useEffect(() => {
+    if (userData && userData.volunteer) {
+      router.push("/new-volunteer");
+    }
+  }, [userData]);
+
+  if (!userData || (userData && userData.volunteer)) {
+    // maybe show here spinner
+    return null;
+  }
 
   const onReasonSelected = (reason: string) => {
     if (reason === REASON_VOLUNTEER) {

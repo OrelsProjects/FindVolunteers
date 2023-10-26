@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import LinkedinLogin from "../../../components/LinkedinLogin";
 
 const Volunteer = () => {
-  const { userData } = useRequireAuth();
+  const { userData }: { userData: any } = useRequireAuth();
   console.log("user data in volunteer", userData);
   const router = useRouter();
 
@@ -15,6 +15,11 @@ const Volunteer = () => {
       router.push("/new-volunteer");
     }
   }, [userData]);
+
+  if (!userData || (userData && userData.volunteer)) {
+    // maybe show here spinner
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen p-8 text-center">
