@@ -18,10 +18,12 @@ export interface BasicTableProps {
   type: TableTypes;
   initialPage?: number;
   limit?: number;
+  onRowClick?: (item: UseTableDataItem<any>) => void;
 }
 
 export default function BasicTable<T extends UseTableDataItem<T>>({
   type,
+  onRowClick,
   initialPage = 1,
   limit = 10,
 }: BasicTableProps) {
@@ -34,9 +36,10 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
   const { data, loading }: { data: T[]; loading: boolean } =
     useTable<T>(tableProps);
 
+  console.log(data);
+
   // Determine table columns dynamically based on the first data item
   const columns = data?.length > 0 ? Object.keys(data[0]) : [];
-  debugger;
 
   return (
     <TableContainer
@@ -65,10 +68,18 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
             data?.map((row, rowIndex) => (
               <TableRow
                 key={rowIndex}
-                sx={{ "&:nth-of-type(odd)": { backgroundColor: "#f3f6fc" } }}
+                sx={{
+                  "&:nth-of-type(odd)": { backgroundColor: "#f3f6fc" },
+                  "&:hover": { backgroundColor: "#509be69e" },
+                }}
+                className="cursor-pointer hover:underline"
               >
                 {columns.map((column) => (
-                  <TableCell key={column} sx={{ color: "#424242" }}>
+                  <TableCell
+                    key={column}
+                    sx={{ color: "#424242" }}
+                    onClick={() => onRowClick?.(row)}
+                  >
                     {(row as any)[column]}
                   </TableCell>
                 ))}

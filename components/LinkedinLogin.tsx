@@ -15,7 +15,7 @@ export default function LinkedinLogin({
   const router = useRouter();
   const login = async () => {
     await signIn();
-    router.push("new-volunteer");
+    router.push("profile");
   };
 
   return (

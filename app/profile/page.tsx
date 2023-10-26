@@ -2,10 +2,12 @@
 import { signOut } from "next-auth/react";
 import VolunteerCard from "./_components/volunteerCard";
 
-import { Button } from "@/components/ui/button";
-import useRequireAuth from "@/hooks/useRequireAuth";
+import { Button } from "../../components/ui/button";
+import useRequireAuth from "../../hooks/useRequireAuth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import React from "react";
+import Tabs from "@/components/ui/tabs"; // TODO: Make it in layout.tsx
 
 // interface CustomSession extends Session {
 //   user: {
@@ -41,14 +43,8 @@ const NewVolunteer = () => {
 
   const onSignOut = () => {
     setUserData(null);
-    signOut({ callbackUrl: "/" });
+    signOut({ callbackUrl: "/auth" });
   };
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [status]);
 
   if (!userData) {
     // maybe show here spinner
@@ -56,7 +52,7 @@ const NewVolunteer = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen p-8">
+    <div className="flex flex-col items-center justify-center p-8 w-screen">
       <h1
         className={`font-bold text-2xl ${
           !userData?.volunteer?.role ? "mb-2" : "mb-6"

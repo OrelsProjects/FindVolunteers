@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   Form,
   FormControl,
@@ -8,13 +8,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Volunteer } from "@/lib/types";
+} from "../../../components/ui/form";
+import { Input } from "../../../components/ui/input";
+import { Switch } from "../../../components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Pencil } from "lucide-react";
+import React from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -155,7 +155,6 @@ const VolunteerCard = ({
               <span className="text-sm">{isEnabled ? "כן" : "לא"}</span>
             </div>
           </div>
-          {/* <div className="h-16" /> */}
         </>
       )}
       {editMode && (

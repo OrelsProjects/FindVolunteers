@@ -17,7 +17,7 @@ function Home() {
 
   useEffect(() => {
     if (userData && userData.volunteer) {
-      router.push("/new-volunteer");
+      router.push("/profile");
     }
   }, [userData]);
 
@@ -28,7 +28,7 @@ function Home() {
 
   const onReasonSelected = (reason: string) => {
     if (reason === REASON_VOLUNTEER) {
-      router.push("/volunteer");
+      router.push("/auth");
     } else if (reason === REASON_PROJECT_OWNER) {
       router.push("/project-owner");
     }

@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import RecoidContextProvider from "./recoilContextProvider";
+import AuthProvider from "./authProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,9 @@ export default async function RootLayout({
     <html lang="en" dir="rtl">
       <body className={inter.className}>
         <Provider session={session}>
-          <RecoidContextProvider>{children}</RecoidContextProvider>
+          <RecoidContextProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </RecoidContextProvider>
         </Provider>
         <Toaster />
       </body>

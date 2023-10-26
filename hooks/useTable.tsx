@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { TableTypes, UseTableDataItem } from "@/lib/types";
+import { ApiResponse, TableTypes, UseTableDataItem } from "@/lib/types";
 
 export interface UseTableProps<T> {
   type: TableTypes;
@@ -47,10 +47,13 @@ function useTable<T extends UseTableDataItem<T>>({
     const fetchData = async (): Promise<void> => {
       try {
         setLoading(true);
-        const response = await axios.get<PagedResponse<T>>(
+        const response = await axios.get<ApiResponse<T>>(
           `api/${getUrl(type)}?page=${page}&limit=${limit}`
         );
-        setData(response.data?.items ?? []);
+        debugger;
+        if (response.data?.result) {
+          setData((response.data?.result as T[]) ?? []);
+        }
       } catch (error) {
         console.error("An error occurred while fetching data:", error);
       } finally {

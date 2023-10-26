@@ -13,7 +13,7 @@ export enum TableTypes {
 }
 
 export interface ApiResponse<T> {
-  items?: T | T[] | null;
+  result?: T | T[] | null;
   error?: string;
 }
 
@@ -35,6 +35,7 @@ export class Volunteer extends UseTableDataItem<Volunteer> {
   experienceYears: number;
   userId?: string;
   isEnabled?: boolean;
+  linkedinUrl?: string;
 
   constructor(
     name: string,
@@ -42,7 +43,8 @@ export class Volunteer extends UseTableDataItem<Volunteer> {
     experienceYears: number,
     userId?: string,
     id?: string,
-    isEnabled?: boolean
+    isEnabled?: boolean,
+    linkedinUrl?: string
   ) {
     super(name, id);
     this.name = name;
@@ -50,6 +52,7 @@ export class Volunteer extends UseTableDataItem<Volunteer> {
     this.experienceYears = experienceYears;
     this.userId = userId;
     this.isEnabled = isEnabled;
+    this.linkedinUrl = linkedinUrl;
   }
 
   toObject(): Volunteer {
@@ -60,7 +63,8 @@ export class Volunteer extends UseTableDataItem<Volunteer> {
       this.experienceYears,
       this.userId,
       this.id,
-      this.isEnabled
+      this.isEnabled,
+      this.linkedinUrl
     );
   }
 
@@ -71,6 +75,7 @@ export class Volunteer extends UseTableDataItem<Volunteer> {
       experienceYears: this.experienceYears,
       isEnabled: this.isEnabled,
       userId: this.userId,
+      linkedinUrl: this.linkedinUrl,
     };
   }
 
@@ -87,7 +92,8 @@ export class Volunteer extends UseTableDataItem<Volunteer> {
       data.experienceYears,
       data.userId,
       doc.id, // Assuming the document ID is the same as the 'id' property
-      data.isEnabled
+      data.isEnabled,
+      data.linkedinUrl
     );
   }
 
@@ -99,6 +105,7 @@ export class Volunteer extends UseTableDataItem<Volunteer> {
       experienceYears: volunteer.experienceYears,
       userId: volunteer.userId,
       isEnabled: volunteer.isEnabled,
+      linkedinUrl: volunteer.linkedinUrl,
     };
   }
 }

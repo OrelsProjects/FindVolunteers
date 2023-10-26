@@ -1,5 +1,3 @@
-import { volunteersCol } from "@/utils/firestore";
-import { getDocs, limit, query, where } from "firebase/firestore";
 import NextAuth from "next-auth";
 import LinkedInProvider from "next-auth/providers/linkedin";
 
@@ -46,7 +44,7 @@ export const authOptions = {
         return {
           ...user,
           ...additionalUserData,
-          // redirect: '/new-volunteer',
+          // redirect: '/profile',
         };
       } catch (e) {
         console.log(e);
