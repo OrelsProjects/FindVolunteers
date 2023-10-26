@@ -3,6 +3,7 @@ import Provider from "@/app/context/client-provider";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import RecoidContextProvider from "./recoilContextProvider";
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
         <Provider session={session}>
           <RecoidContextProvider>{children}</RecoidContextProvider>
         </Provider>
+        <Toaster />
       </body>
     </html>
   );

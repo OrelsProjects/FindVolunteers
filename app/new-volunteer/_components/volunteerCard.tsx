@@ -16,6 +16,7 @@ import axios from "axios";
 import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -80,22 +81,34 @@ const VolunteerCard = ({
 
   async function onSubmitClick(values: z.infer<typeof formSchema>) {
     console.log("values", values);
-    if (name === values.name
-      && role === values.role
-      && experienceYears === values.experienceYears
-      && isEnabled === values.isEnabled) {
-        // no changes were made
-        // TODO: toast - changes saved sucessfully
-        setEditMode(false);
-      }
+    if (
+      name === values.name &&
+      role === values.role &&
+      experienceYears === values.experienceYears &&
+      isEnabled === values.isEnabled
+    ) {
+      // no changes were made
+      // TODO: toast - changes saved sucessfully
+      toast.success("השינויים נשמרו בהצלחה");
+      setEditMode(false);
+      return;
+    }
     // TODO: need to check here if the volunteer has an id
     // if so, then use - axious.put (update), else - post (new)
+    let updateValuesPromise;
     if (id) {
-      await axios.put("/api/volunteer", { ...values, id });
+      // await axios.put("/api/volunteer", { ...values, id });
+      updateValuesPromise = axios.put("/api/volunteer", { ...values, id });
     } else {
-      await axios.post("/api/volunteer", values);
+      // await axios.post("/api/volunteer", values);
+      updateValuesPromise = axios.post("/api/volunteer", values);
     }
-    // TODO: toast - changes saved successfully
+    toast.promise(updateValuesPromise, {
+      loading: "שומר...",
+      success: "השינויים נשמרו בהצלחה",
+      error: "חלה שגיאה בשמירה",
+    });
+    await updateValuesPromise;
     onSubmit(values);
     setEditMode(false);
   }
@@ -146,7 +159,10 @@ const VolunteerCard = ({
       {editMode && (
         <div>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmitClick)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmitClick)}
+              className="space-y-4"
+            >
               <FormField
                 control={form.control}
                 name="name"
