@@ -41,6 +41,7 @@ interface Props {
   role: string;
   experienceYears: number;
   isEnabled?: boolean;
+  id: string;
 }
 
 const VolunteerCard = ({
@@ -48,6 +49,7 @@ const VolunteerCard = ({
   role = "",
   experienceYears = 1,
   isEnabled = true,
+  id,
 }: Props) => {
   const [editMode, setEditMode] = useState(false);
 
@@ -67,7 +69,11 @@ const VolunteerCard = ({
     console.log("values", values);
     // TODO: need to check here if the volunteer has an id
     // if so, then use - axious.put (update), else - post (new)
-    await axios.post("/api/volunteer", values);
+    if (id) {
+      await axios.put("/api/volunteer", { ...values, id });
+    } else {
+      await axios.post("/api/volunteer", values);
+    }
     setEditMode(false);
   }
 

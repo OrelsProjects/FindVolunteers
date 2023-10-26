@@ -1,6 +1,7 @@
 import { DocumentData } from "@firebase/firestore-types";
 
 export const VOLUNTEER_COLLECTION = "volunteers";
+export const PROJECT_OWNERS_COLLECTION = "projectOwners";
 export const USER_COLLECTION = "users";
 
 export class Volunteer {
