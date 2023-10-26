@@ -1,4 +1,3 @@
-import { Volunteer } from "@/lib/types";
 import { volunteersCol } from "@/utils/firestore";
 import { addDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
@@ -21,7 +20,7 @@ export async function POST(req: NextRequest): Promise<NextResponse | void> {
 
     return NextResponse.json({ id: volunteerRef.id }, { status: 200 });
   } catch (e) {
-    console.log('error in add volunteer');
+    console.log("error in add volunteer");
     console.log(e);
     return NextResponse.json({ error: "Request failed" }, { status: 500 });
   }
@@ -38,7 +37,7 @@ export async function PUT(req: NextRequest): Promise<NextResponse | void> {
 
     return NextResponse.json({ id: volunteerRef.id }, { status: 200 });
   } catch (e) {
-    console.log('error in update volunteer');
+    console.log("error in update volunteer");
     console.log(e);
     return NextResponse.json({ error: JSON.stringify(e) }, { status: 500 });
   }
