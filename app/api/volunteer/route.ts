@@ -14,6 +14,7 @@ import {
   DocumentSnapshot,
   FirestoreDataConverter,
   DocumentReference,
+  where,
 } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -49,7 +50,8 @@ export async function GET(
       const q = query(
         volunteersCol,
         orderBy("createdAt", "desc"),
-        limit(limitNum)
+        limit(limitNum),
+        where("isEnabled", "==", false)
       ).withConverter(converterVolunteer);
       const snapshot = await getDocs(q);
 
