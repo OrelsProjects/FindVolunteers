@@ -37,7 +37,15 @@ const Volunteers = () => {
     }
   };
 
-  return <BasicTable type={TableTypes.VOLUNTEERS} onRowClick={onRowClick} />;
+  return (
+    <BasicTable
+      type={TableTypes.VOLUNTEERS}
+      onRowClick={onRowClick}
+      rowCondition={(item: Volunteer) =>
+        item.linkedinUrl !== undefined && item.linkedinUrl !== null
+      }
+    />
+  );
 };
 
 export default Volunteers;

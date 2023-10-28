@@ -236,7 +236,7 @@ const VolunteerCard = ({
                 <Button variant="outline" onClick={onCancel} disabled={!role}>
                   ביטול
                 </Button>
-                <Button type="submit">אישור</Button>
+                <Button type="submit">שמור</Button>
               </div>
             </form>
           </Form>

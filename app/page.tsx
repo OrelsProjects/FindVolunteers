@@ -36,17 +36,8 @@ function Home() {
 
   return (
     <div className="flex flex-col gap-6 m-auto items-center p-8">
-      <h1 className="font-bold text-4xl text-center">
-        מקשרים בין מפתחים לבעלי פרויקטים <br /> שמטרתם להעניק סיוע בימי מלחמה
-      </h1>
-      <p className="text-2xl">אז מה תרצו לעשות?</p>
-      <RadioButtonGroup
-        onClick={onReasonSelected}
-        items={[
-          { label: "אני רוצה להתנדב", value: REASON_VOLUNTEER },
-          { label: "אני מחפש מפתחים", value: REASON_PROJECT_OWNER },
-        ]}
-      />
+      {/* Tailwind css loading circle */}
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-300"></div>
     </div>
   );
 }
