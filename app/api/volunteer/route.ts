@@ -51,7 +51,7 @@ export async function GET(
         volunteersCol,
         orderBy("createdAt", "desc"),
         limit(limitNum),
-        where("isEnabled", "==", false)
+        where("isEnabled", "==", true)
       ).withConverter(converterVolunteer);
       const snapshot = await getDocs(q);
 
