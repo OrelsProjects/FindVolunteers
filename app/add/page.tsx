@@ -1,9 +1,9 @@
 "use client";
 
-import { Formik, Form, Field } from "formik";
-import Input from "../../components/Input";
-import Dropdown from "../../components/Dropdown";
+import { Field, Form, Formik } from "formik";
 import Button from "../../components/Button";
+import Dropdown from "../../components/Dropdown";
+import Input from "../../components/Input";
 
 interface FormValues {
   input: string;
@@ -30,10 +30,12 @@ const AddVolunteer = () => {
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       <Form>
         <Field name="input">
-          {({ field } : { field: any}) => <Input {...field} placeholder="Input" />}
+          {({ field }: { field: any }) => (
+            <Input {...field} placeholder="Input" />
+          )}
         </Field>
         <Field name="dropdown">
-          {({ field } : { field: any}) => (
+          {({ field }: { field: any }) => (
             <Dropdown
               {...field}
               options={dropdownOptions}

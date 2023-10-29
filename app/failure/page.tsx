@@ -1,5 +1,4 @@
 // pages/failure.js
-import React from 'react';
 
 const Failure = () => {
   return (

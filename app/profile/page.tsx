@@ -4,33 +4,14 @@ import VolunteerCard from "./_components/volunteerCard";
 
 import { Button } from "../../components/ui/button";
 import useRequireAuth from "../../hooks/useRequireAuth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import React from "react";
-import Tabs from "@/components/ui/tabs"; // TODO: Make it in layout.tsx
-
-// interface CustomSession extends Session {
-//   user: {
-//     name?: string | null;
-//     email?: string | null;
-//     image?: string | null;
-//     role: string;
-//     experienceYears: number;
-//     id: string;
-//   };
-// }
 
 const NewVolunteer = () => {
-  // @ts-ignore
-  // const { data: session } : { data: CustomSession} = useSession();
-
   // get user from session and display his info
   const {
     userData,
     updateVolunteerData,
     setUserData,
     session,
-    status,
   }: {
     userData: any;
     updateVolunteerData: (values: any) => void;
@@ -38,8 +19,6 @@ const NewVolunteer = () => {
     session: any;
     status: any;
   } = useRequireAuth();
-  const router = useRouter();
-  console.log("user data in new volunteer", userData);
 
   const onSignOut = () => {
     setUserData(null);

@@ -1,5 +1,5 @@
-import { Field, FieldProps } from "formik";
 import { Autocomplete, TextField } from "@mui/material";
+import { Field, FieldProps } from "formik";
 
 interface DropdownOption {
   label: string;
@@ -12,13 +12,18 @@ interface DropdownProps<T> {
   options: DropdownOption[];
 }
 
-function Dropdown<DropdownOption>({ name, label, options, ...props }: DropdownProps<DropdownOption>) {
+function Dropdown<DropdownOption>({
+  name,
+  label,
+  options,
+  ...props
+}: DropdownProps<DropdownOption>) {
   return (
     <Field name={name}>
       {({ field, form }: FieldProps) => (
         <Autocomplete
           {...props}
-          options={ options}
+          options={options}
           getOptionLabel={(option) => `${option.label}`}
           renderInput={(params) => (
             <TextField

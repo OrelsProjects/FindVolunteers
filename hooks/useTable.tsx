@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
 import { ApiResponse, TableTypes, UseTableDataItem } from "@/lib/types";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export interface UseTableProps<T> {
   type: TableTypes;

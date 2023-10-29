@@ -27,7 +27,7 @@ function useRequireAuth() {
           cache: "no-store",
         });
         const result = await data.json();
-        console.log('user data result', result);
+        console.log("user data result", result);
         setUserData(result);
         isLoading = false;
       };

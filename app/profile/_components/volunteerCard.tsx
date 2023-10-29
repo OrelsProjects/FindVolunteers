@@ -1,5 +1,12 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { Pencil } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import * as z from "zod";
 import { Button } from "../../../components/ui/button";
 import {
   Form,
@@ -11,14 +18,6 @@ import {
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
 import { Switch } from "../../../components/ui/switch";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { Pencil } from "lucide-react";
-import React from "react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import * as z from "zod";
 
 const formSchema = z.object({
   name: z

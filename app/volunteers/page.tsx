@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import { useState } from "react";
 import BasicTable from "../../components/ui/table";
 import {
   ApiResponse,
@@ -8,7 +9,6 @@ import {
   UseTableDataItem,
   Volunteer,
 } from "../../lib/types";
-import React, { useState } from "react";
 
 const Volunteers = () => {
   const [loading, setLoading] = useState<boolean>(false);

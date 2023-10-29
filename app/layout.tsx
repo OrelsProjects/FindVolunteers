@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import AuthProvider from "./authProvider";
 import "./globals.css";
 import RecoidContextProvider from "./recoilContextProvider";
-import AuthProvider from "./authProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

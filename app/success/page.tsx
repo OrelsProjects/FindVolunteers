@@ -1,5 +1,4 @@
 // pages/success.js
-import React from 'react';
 
 const Success = () => {
   return (

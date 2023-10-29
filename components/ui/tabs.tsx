@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 interface TabItem {
   label: string;
@@ -37,7 +37,7 @@ const Tabs = ({ items, onClick }: TabsProps) => {
           onClick={() => handleClick(item.href)}
           variant={`${selectedValue === item.href ? "default" : "outline"}`}
           // Round the corners of the first and last buttons
-          className= "rounded-none first:rounded-r-md last:rounded-l-md"
+          className="rounded-none first:rounded-r-md last:rounded-l-md"
         >
           {item.label}
         </Button>

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import useRequireAuth from "@/hooks/useRequireAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import NavProvider from "./navProvider";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {

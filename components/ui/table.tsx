@@ -1,22 +1,21 @@
 "use client";
 
-import * as React from "react";
 import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
 } from "@mui/material";
+import * as React from "react";
 
+import { getTableMapping } from "@/lib/tableMapping";
+import Image from "next/image";
+import { useEffect } from "react";
 import useTable, { UseTableProps } from "../../hooks/useTable"; // Import the useTable hook
 import { TableTypes, UseTableDataItem } from "../../lib/types";
-import { useEffect } from "react";
-import { getTableMapping } from "@/lib/tableMapping";
-import { Button } from "./button";
-import Image from "next/image";
 
 export interface BasicTableProps {
   type: TableTypes;
