@@ -1,21 +1,16 @@
-import { ApiResponse, Volunteer, Volunteers } from "@/lib/types";
+import { ApiResponse, Volunteer } from "@/lib/types";
 import { volunteersCol } from "@/utils/firestore";
 import {
-  addDoc,
-  deleteDoc,
   doc,
-  getDoc,
-  orderBy,
-  query,
-  updateDoc,
-  limit,
-  getDocs,
   DocumentData,
+  DocumentReference,
   DocumentSnapshot,
   FirestoreDataConverter,
-  DocumentReference,
+  getDoc,
 } from "firebase/firestore";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/route";
 
 const converterVolunteer: FirestoreDataConverter<Volunteer | null> = {
   toFirestore: (volunteer: Volunteer) => Volunteer.toFirestore(volunteer),
@@ -27,6 +22,10 @@ export async function GET(
   req: NextRequest
 ): Promise<NextResponse<ApiResponse<string | null>>> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const id = req.nextUrl.searchParams.get("id") || "";
     // Many volunteers request
 

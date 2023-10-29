@@ -8,10 +8,16 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(req: NextRequest): Promise<NextResponse | void> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     // get the email and find volunteer + project owner with this email
     const email = req.nextUrl.searchParams.get("email") || "";
     console.log("email", email);
@@ -52,6 +58,10 @@ export async function GET(req: NextRequest): Promise<NextResponse | void> {
 
 export async function POST(req: NextRequest): Promise<NextResponse | void> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const user = await req.json();
     const userRef = await addDoc(usersCol, user);
 
@@ -63,6 +73,10 @@ export async function POST(req: NextRequest): Promise<NextResponse | void> {
 
 export async function PUT(req: NextRequest): Promise<NextResponse | void> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const user = await req.json();
     const userRef = doc(usersCol, user.id);
 
@@ -76,6 +90,10 @@ export async function PUT(req: NextRequest): Promise<NextResponse | void> {
 
 export async function DELETE(req: NextRequest): Promise<NextResponse | void> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const id = req.nextUrl.searchParams.get("id") || "";
 
     await deleteDoc(doc(usersCol, id));

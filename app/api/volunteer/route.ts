@@ -4,19 +4,21 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  DocumentData,
+  DocumentReference,
+  DocumentSnapshot,
+  FirestoreDataConverter,
   getDoc,
+  getDocs,
+  limit,
   orderBy,
   query,
   updateDoc,
-  limit,
-  getDocs,
-  DocumentData,
-  DocumentSnapshot,
-  FirestoreDataConverter,
-  DocumentReference,
   where,
 } from "firebase/firestore";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 const converterVolunteer: FirestoreDataConverter<Volunteer | null> = {
   toFirestore: (volunteer: Volunteer) => Volunteer.toFirestore(volunteer),
@@ -30,6 +32,10 @@ export async function GET(
   NextResponse<ApiResponse<Volunteer | Volunteers | null | undefined>>
 > {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const id = req.nextUrl.searchParams.get("id") || "";
     // Many volunteers request
     if (!id) {
@@ -81,6 +87,10 @@ export async function POST(
   req: NextRequest
 ): Promise<NextResponse<ApiResponse<string | null>> | void> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const volunteer: Volunteer = await req.json();
     const volunteerJson = JSON.parse(JSON.stringify(volunteer));
     volunteerJson.createdAt = new Date();
@@ -99,6 +109,10 @@ export async function PUT(
   req: NextRequest
 ): Promise<NextResponse<ApiResponse<string | null>> | void> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const volunteer: Volunteer = await req.json();
 
     const volunteerRef = doc(volunteersCol, volunteer.id).withConverter({
@@ -121,6 +135,10 @@ export async function DELETE(
   req: NextRequest
 ): Promise<NextResponse<ApiResponse<string | null>> | void> {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const volunteer: Volunteer = await req.json();
 
     const volunteerRef = doc(volunteersCol, volunteer.id).withConverter({
