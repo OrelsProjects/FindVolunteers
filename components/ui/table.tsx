@@ -56,6 +56,12 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
   // Determine table columns dynamically based on the first data item
   const columns = data?.length > 0 ? Object.keys(data[0]) : [];
 
+  if (loading) {
+    return (
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-300"></div>
+    );
+  }
+
   return (
     <TableContainer
       component={Paper}
