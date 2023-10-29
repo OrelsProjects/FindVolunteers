@@ -38,13 +38,15 @@ const Volunteers = () => {
   };
 
   return (
-    <BasicTable
-      type={TableTypes.VOLUNTEERS}
-      onRowClick={onRowClick}
-      rowCondition={(item: Volunteer) =>
-        item.linkedinUrl !== undefined && item.linkedinUrl !== null
-      }
-    />
+    <div className="p-8">
+      <BasicTable
+        type={TableTypes.VOLUNTEERS}
+        onRowClick={onRowClick}
+        rowCondition={(item: Volunteer) =>
+          item.linkedinUrl !== undefined && item.linkedinUrl !== null
+        }
+      />
+    </div>
   );
 };
 
