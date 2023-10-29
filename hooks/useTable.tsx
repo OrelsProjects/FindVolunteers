@@ -30,7 +30,7 @@ function useTable<T extends UseTableDataItem<T>>({
 }: UseTableProps<T>): UseTable<T> {
   const [data, setData] = useState<T[]>([]);
   const [page, setPage] = useState<number>(initialPage);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [totalPages, setTotalPages] = useState<number>(0);
 
   const getUrl = (type: TableTypes): string => {
@@ -50,7 +50,6 @@ function useTable<T extends UseTableDataItem<T>>({
         const response = await axios.get<ApiResponse<T>>(
           `api/${getUrl(type)}?page=${page}&limit=${limit}`
         );
-        debugger;
         if (response.data?.result) {
           setData((response.data?.result as T[]) ?? []);
         }
