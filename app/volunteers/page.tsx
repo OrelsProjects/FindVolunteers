@@ -1,15 +1,32 @@
 "use client";
 
-import { linkedinProfilePrefix } from "@/lib/constants";
+import React, { useState } from "react";
 import BasicTable from "../../components/ui/table";
-import { TableTypes, Volunteer } from "../../lib/types";
-
+import { ApiResponse, TableTypes, Volunteer } from "../../lib/types";
+import axios from "axios";
 const Volunteers = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const onRowClick = async (item: Volunteer) => {
-    window.open(
-      `https://${linkedinProfilePrefix}${item.linkedinUrl}`,
-      "_blank"
-    );
+    try {
+      setLoading(true);
+      const response = await axios.get<ApiResponse<string | null>>(
+        `/api/volunteer/linkedin`,
+        {
+          params: {
+            id: item.id,
+          },
+        }
+      );
+      const url = response.data.result;
+      if (url) {
+        window.open(`https://www.linkedin.com/in/${url}`, "_blank");
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
