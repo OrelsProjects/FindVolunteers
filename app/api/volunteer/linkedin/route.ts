@@ -27,9 +27,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     const id = req.nextUrl.searchParams.get("id") || "";
-    // Many volunteers request
 
-    // Single volunteer request
     const volunteerDoc: DocumentReference<Volunteer | null> = doc(
       volunteersCol,
       id

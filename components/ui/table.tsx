@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import * as React from "react";
-
+import useMediaQuery from "@mui/material/useMediaQuery"; // <-- Add this import for media queries
 import { getTableMapping } from "@/lib/tableMapping";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ export interface BasicTableProps {
   type: TableTypes;
   initialPage?: number;
   limit?: number;
-  onRowClick?: (item: UseTableDataItem<any>) => void;
+  onRowClick?: (item: any) => void;
   rowCondition?: (item: any) => boolean;
 }
 
@@ -40,6 +40,8 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
 
   const { data, loading }: { data: T[]; loading: boolean } =
     useTable<T>(tableProps);
+
+  const matches = useMediaQuery("(max-width:600px)"); // <-- Add media query check
 
   const [columnsMapping, setColumsMapping] = React.useState<
     Record<string, string>
@@ -67,23 +69,26 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
       sx={{
         borderRadius: "1rem",
         boxShadow: 3,
-        minWidth: 450,
-        maxWidth: 650,
+        minWidth: 350,
+        width: 650,
         direction: "rtl",
+        overflowX: "auto", // <-- Add this line
       }}
     >
-      <Table sx={{ minWidth: 450, maxWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 350, width: 650 }} aria-label="simple table">
         <TableHead sx={{ backgroundColor: "#1976d2" }}>
           <TableRow>
             {columns?.map(
               (column: string) =>
                 isMapContainsKey(column) && (
                   <TableCell
+                    className="p-0"
                     key={column}
                     sx={{
                       color: "#fff",
                       fontWeight: "bold",
                       textAlign: "center",
+                      padding: 0,
                     }}
                   >
                     {columnsMapping[column]}
@@ -98,7 +103,7 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
                   textAlign: "center",
                 }}
               >
-                קישור לפרופיל
+                לינקדין
               </TableCell>
             )}
           </TableRow>
@@ -124,7 +129,11 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
                     rowCondition(row) && (
                       <TableCell
                         key={column}
-                        sx={{ color: "#424242", textAlign: "center" }}
+                        sx={{
+                          color: "#424242",
+                          textAlign: "center",
+                          padding: 0,
+                        }}
                       >
                         {(row as any)[column]}
                       </TableCell>

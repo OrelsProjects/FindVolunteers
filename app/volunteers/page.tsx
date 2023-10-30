@@ -2,20 +2,18 @@
 
 import { linkedinProfilePrefix } from "@/lib/constants";
 import BasicTable from "../../components/ui/table";
-import { TableTypes, UseTableDataItem, Volunteer } from "../../lib/types";
+import { TableTypes, Volunteer } from "../../lib/types";
 
 const Volunteers = () => {
-  const onRowClick = async (item: UseTableDataItem<Volunteer>) => {
-    console.log("item clicked", item);
+  const onRowClick = async (item: Volunteer) => {
     window.open(
-      // @ts-ignore
       `https://${linkedinProfilePrefix}${item.linkedinUrl}`,
       "_blank"
     );
   };
 
   return (
-    <div className="p-8">
+    <div className="p-8 flex justify-center items-center overflow-x-auto w-screen">
       <BasicTable
         type={TableTypes.VOLUNTEERS}
         onRowClick={onRowClick}

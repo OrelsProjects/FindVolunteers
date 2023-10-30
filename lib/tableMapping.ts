@@ -4,7 +4,7 @@ const getVolunteersMapping = (): Record<string, string> => {
   return {
     experienceYears: "שנות ניסיון",
     role: "תפקיד",
-    name: "שם",
+    name: "שם מלא",
   };
 };
 
