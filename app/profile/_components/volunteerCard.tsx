@@ -1,5 +1,6 @@
 "use client";
 
+import { linkedinProfilePrefix } from "@/lib/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Pencil } from "lucide-react";
@@ -24,17 +25,22 @@ const formSchema = z.object({
     .string()
     .trim()
     .min(2, "יש להזין שם באורך של לפחות 2 תווים ועד 50")
-    .max(50),
+    .max(50, "יש להזין שם באורך של לפחות 2 תווים ועד 50"),
   role: z
     .string()
     .trim()
     .min(2, "יש להזין שם באורך של לפחות 2 תווים ועד 50")
-    .max(50),
+    .max(50, "יש להזין שם באורך של לפחות 2 תווים ועד 50"),
   experienceYears: z.coerce
     .number({ invalid_type_error: "יש להזין מספר תקין גדול מ-0" })
     .positive("יש להזין מספר תקין גדול מ-0")
     .max(99, "לא נסחפנו?"),
   isEnabled: z.boolean().default(true),
+  linkedinUrl: z
+    .string()
+    .trim()
+    .min(3, "יש להזין שם באורך של לפחות 3 תווים ועד 100")
+    .max(100, "יש להזין שם באורך של לפחות 3 תווים ועד 100"),
 });
 
 interface Props {
@@ -42,6 +48,7 @@ interface Props {
   role: string;
   experienceYears: number;
   isEnabled?: boolean;
+  linkedinUrl: string;
   email: string;
   id: string;
   onSubmit: (values: any) => void;
@@ -52,11 +59,13 @@ const VolunteerCard = ({
   role = "",
   experienceYears = 1,
   isEnabled = true,
+  linkedinUrl = "",
   email,
   id,
   onSubmit,
 }: Props) => {
   const [editMode, setEditMode] = useState(!role);
+  console.log("profile link", linkedinUrl);
 
   const form = useForm<z.infer<typeof formSchema>>({
     // reValidateMode: 'onChange',
@@ -67,6 +76,7 @@ const VolunteerCard = ({
       role,
       experienceYears,
       isEnabled,
+      linkedinUrl,
     },
   });
 
@@ -77,6 +87,7 @@ const VolunteerCard = ({
         role,
         experienceYears,
         isEnabled,
+        linkedinUrl,
       });
     }
   }, [editMode, form.reset]);
@@ -87,7 +98,8 @@ const VolunteerCard = ({
       name === values.name &&
       role === values.role &&
       experienceYears === values.experienceYears &&
-      isEnabled === values.isEnabled
+      isEnabled === values.isEnabled &&
+      linkedinUrl === values.linkedinUrl
     ) {
       // no changes were made
       // TODO: toast - changes saved sucessfully
@@ -150,6 +162,15 @@ const VolunteerCard = ({
               <span className="text-sm">{experienceYears}</span>
             </div>
             <div className="flex flex-col">
+              <span className="font-semibold">קישור לפרופיל לינקדאין:</span>
+              <a
+                // className="text-sm"
+                className="text-blue-600 dark:text-blue-500 hover:underline"
+                href={`https://${linkedinProfilePrefix}${linkedinUrl}`}
+                target="_blank"
+              >{`${linkedinProfilePrefix}${linkedinUrl}`}</a>
+            </div>
+            <div className="flex flex-col">
               <span className="font-semibold">אפשר לאחרים למצוא אותך:</span>
               <span className="text-sm">{isEnabled ? "כן" : "לא"}</span>
             </div>
@@ -207,6 +228,24 @@ const VolunteerCard = ({
                     </FormLabel>
                     <FormControl>
                       <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="linkedinUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-base">
+                      קישור לפרופיל לינקדאין:
+                    </FormLabel>
+                    <FormControl>
+                      <div className="text-sm flex items-center gap-1 [direction:ltr] ">
+                        <div>{linkedinProfilePrefix}</div>
+                        <Input {...field} />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -50,6 +50,7 @@ const NewVolunteer = () => {
         experienceYears={userData?.volunteer?.experienceYears || 1}
         id={userData?.volunteer?.id || ""}
         isEnabled={userData?.volunteer ? userData?.volunteer.isEnabled : true}
+        linkedinUrl={userData?.volunteer ? userData?.volunteer.linkedinUrl : ""}
         email={session?.user?.email}
         onSubmit={updateVolunteerData}
       />

@@ -1,40 +1,17 @@
 "use client";
 
-import axios from "axios";
-import { useState } from "react";
+import { linkedinProfilePrefix } from "@/lib/constants";
 import BasicTable from "../../components/ui/table";
-import {
-  ApiResponse,
-  TableTypes,
-  UseTableDataItem,
-  Volunteer,
-} from "../../lib/types";
+import { TableTypes, UseTableDataItem, Volunteer } from "../../lib/types";
 
 const Volunteers = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-
   const onRowClick = async (item: UseTableDataItem<Volunteer>) => {
     console.log("item clicked", item);
-    try {
-      setLoading(true);
-      const response = await axios.get<ApiResponse<string | null>>(
-        `/api/volunteer/linkedin`,
-        {
-          params: {
-            id: item.id,
-          },
-        }
-      );
-      const url = response.data.result;
-      if (url) {
-        window.open(`${url}`, "_blank");
-      }
-      // Open url in new tab if not null
-    } catch (error) {
-      console.error("An error occurred while fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
+    window.open(
+      // @ts-ignore
+      `https://${linkedinProfilePrefix}${item.linkedinUrl}`,
+      "_blank"
+    );
   };
 
   return (

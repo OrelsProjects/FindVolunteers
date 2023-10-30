@@ -1,0 +1,1 @@
+export const linkedinProfilePrefix = "www.linkedin.com/in/";
