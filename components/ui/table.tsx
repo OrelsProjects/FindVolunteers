@@ -115,6 +115,7 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
                 sx={{
                   "&:nth-of-type(odd)": { backgroundColor: "#f3f6fc" },
                   "&:hover": { backgroundColor: "#509be69e" },
+                  "&:last-child>td": { borderBottom: "none" },
                 }}
               >
                 {columns.map(
@@ -130,22 +131,17 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
                     )
                 )}
                 {type === TableTypes.VOLUNTEERS && rowCondition(row) && (
-                  <TableCell
-                    sx={{
-                      color: "#424242",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image
-                      src="/linkedin_icon.png"
-                      alt="LinkedIn"
-                      width={24}
-                      height={24}
-                      className="hover:cursor-pointer"
-                      onClick={() => onClick?.(row)}
-                    />
+                  <TableCell>
+                    <div className="flex items-center justify-center">
+                      <Image
+                        src="/linkedin_icon.png"
+                        alt="LinkedIn"
+                        width={24}
+                        height={24}
+                        className="hover:cursor-pointer"
+                        onClick={() => onClick?.(row)}
+                      />
+                    </div>
                   </TableCell>
                 )}
               </TableRow>
