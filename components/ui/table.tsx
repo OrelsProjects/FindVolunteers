@@ -72,7 +72,7 @@ export default function BasicTable<T extends UseTableDataItem<T>>({
         minWidth: 350,
         width: 650,
         direction: "rtl",
-        overflowX: "auto", // <-- Add this line
+        overflowX: "auto",
       }}
     >
       <Table sx={{ minWidth: 350, width: 650 }} aria-label="simple table">
